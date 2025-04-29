@@ -2,7 +2,7 @@
 
 namespace Application\User\DTOs;
 
-use Domains\User\ValueObjects\Email;
+use Domain\User\ValueObjects\Email;
 use Illuminate\Support\Collection;
 
 class RegisterUserDTO

@@ -4,8 +4,8 @@ namespace Application\User\UseCases;
 
 use Application\User\DTOs\LoginUserDTO;
 use Application\User\Interfaces\UserRepositoryInterface;
-use Domains\User\Entities\UserEntity;
-use Domains\User\Services\LoginPolicyService;
+use Domain\User\Entities\UserEntity;
+use Domain\User\Services\LoginPolicyService;
 
 readonly class LoginUser
 {

@@ -1,8 +1,8 @@
 <?php
 
-namespace Domains\User\Entities;
+namespace Domain\User\Entities;
 
-use Domains\User\ValueObjects\Email;
+use Domain\User\ValueObjects\Email;
 use Infrastructure\Persistence\User\Models\User;
 
 class UserEntity

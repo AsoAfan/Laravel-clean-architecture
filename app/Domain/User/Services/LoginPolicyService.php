@@ -1,8 +1,8 @@
 <?php
 
-namespace Domains\User\Services;
+namespace Domain\User\Services;
 
-use Domains\User\Entities\UserEntity;
+use Domain\User\Entities\UserEntity;
 
 readonly class LoginPolicyService
 {

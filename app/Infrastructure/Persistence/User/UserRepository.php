@@ -4,8 +4,8 @@ namespace Infrastructure\Persistence\User;
 
 use Application\User\DTOs\RegisterUserDTO;
 use Application\User\Interfaces\UserRepositoryInterface;
-use Domains\User\Entities\UserEntity;
-use Domains\User\ValueObjects\Email;
+use Domain\User\Entities\UserEntity;
+use Domain\User\ValueObjects\Email;
 use Infrastructure\Persistence\User\Models\User;
 
 class UserRepository implements UserRepositoryInterface

@@ -1,61 +1,154 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Laravel Clean Architecture
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A modular, scalable, and maintainable Laravel project following the principles of **Clean Architecture**. This architecture separates concerns into layers: **Domain**, **Application**, **Infrastructure**, and **Presentation**.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 🧱 Project Structure
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+```
+app/
+├── Application/        # Use Cases, DTOs, Interfaces
+├── Domain/             # Entities, Value Objects, Domain Services
+├── Infrastructure/     # Persistence, External services, Framework logic
+├── Presentations/      # Presentation layer (Controllers, Routes, ...etc)
+├── Providers/          # Service Providers
+```
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## 🧠 Architecture Overview
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- **Domain**: Core business rules (pure PHP). No Laravel dependencies.
+- **Application**: Use cases and service contracts. Also, framework-agnostic.
+- **Infrastructure**: Implements Application interfaces using Laravel features (e.g., Eloquent, Queues).
+- **Presentation**: Routes, Controllers, Middleware — Laravel-specific input/output layer.
+- **Providers**: Laravel service providers for bootstrapping and binding services.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+---
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## 🔧 Path Helper Functions
 
-## Laravel Sponsors
+To simplify file handling and maintain structure across layers, we provide Laravel-style path helpers.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### 📁 Located in:
+```
+app/Support/helpers.php
+```
 
-### Premium Partners
+### 🧩 Available Helpers:
+```php
+infrastructure_path('Support/SomeFile.php');
+domain_path('User/Entities/UserEntity.php');
+application_path('User/UseCases/CreateUser.php');
+```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development/)**
-- **[Active Logic](https://activelogic.com)**
+### ⚙️ Setup
+Make sure it's autoloaded in `composer.json`:
 
-## Contributing
+```json
+"autoload": {
+  "files": [
+    "app/Support/helpers.php"
+  ]
+}
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Then run:
 
-## Code of Conduct
+```bash
+composer dump-autoload
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+---
 
-## Security Vulnerabilities
+## 📦 Installation
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```bash
+git clone https://github.com/AsoAfan/Laravel-clean-architecture.git
+cd Laravel-clean-architecture
+composer install
+cp .env.example .env
+php artisan key:generate
+php artisan migrate
+```
 
-## License
+---
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## 📚 Commands
+
+- `php artisan serve` — Start the Laravel dev server
+- `php artisan test` — Run the test suite
+- Working on more commands...
+
+---
+
+## ✅ Best Practices
+
+### Domain Layer
+| Component           | Suggested Path         | Layer  | Reason / Notes                                         |
+|---------------------|------------------------|--------|--------------------------------------------------------|
+| **Entities**        | `Domain/Entities/`     | Domain | Core business models (e.g., `UserEntity`).             |
+| **ValueObjects**    | `Domain/ValueObjects/` | Domain | Encapsulate small, immutable concepts (e.g., `Email`). |
+| **Domain Services** | `Domain/Services/`     | Domain | Logic that doesn’t belong to a single entity.          |
+| **Domain Events**   | `Domain/Events/`       | Domain | Optional: pure business events.                        |
+| **Aggregates**      | `Domain/Aggregates/`   | Domain | Optional: aggregate roots, if using DDD.               |
+
+### Application Layer
+| Component          | Suggested Path                                        | Layer       | Reason / Notes                                     |
+|--------------------|-------------------------------------------------------|-------------|----------------------------------------------------|
+| **UseCases**       | `Application/UseCases/`                               | Application | Core business logic, orchestrates flow.            |
+| **DTOs**           | `Application/DTOs/`                                   | Application | Transfer data between layers.                      |
+| **Interfaces**     | `Application/Interfaces/` or `Application/Contracts/` | Application | Defines contracts for repositories, services, etc. |
+| **Services**       | `Application/Services/`                               | Application | Domain-related services reused across use cases.   |
+| **Tasks**          | `Application/Tasks/`                                  | Application | Optional for reusable logic blocks.                |
+| **Jobs** (generic) | `Application/Jobs/`                                   | Application | Only if they are framework-agnostic (pure PHP).    |
+
+
+### Infrastructure Layer
+| Component                     | Suggested Path                             | Layer            | Reason / Notes                                          |
+|-------------------------------|--------------------------------------------|------------------|---------------------------------------------------------|
+| **Jobs (Queueable)**          | `Infrastructure/Jobs/`                     | Infrastructure   | Laravel jobs using queues, framework-dependent.         |
+| **Notifications**             | `Infrastructure/External/Notifications/`   | Infrastructure   | External communication: email, SMS, etc.                |
+| **Mails**                     | `Infrastructure/External/Mails/`           | Infrastructure   | Mailables, tied to framework.                           |
+| **Events** (Laravel)          | `Infrastructure/Events/`                   | Infrastructure   | Framework events (UserRegistered, etc.).                |
+| **Listeners**                 | `Infrastructure/Listeners/`                | Infrastructure   | Handle Laravel events (e.g., dispatch job, send email). |
+| **Console Commands**          | `Infrastructure/Console/Commands/`         | Infrastructure   | Artisan commands.                                       |
+| **Policies**                  | `Infrastructure/Authorizations/Policies/`  | Infrastructure   | Authorization logic (Laravel-specific).                 |
+| **Exceptions**                | `Infrastructure/Exceptions/`               | Infrastructure   | Centralized exception handling.                         |
+| **Support (Helpers)**         | `Infrastructure/Support/`                  | Infrastructure   | Shared helpers like `infrastructure_path()`.            |
+| **Repositories (Eloquent)**   | `Infrastructure/Persistence/Repositories/` | Infrastructure   | Implementation of repository interfaces.                |
+| **Models (Eloquent)**         | `Infrastructure/Persistence/Models/`       | Infrastructure   | Framework ORM models, tied to DB.                       |
+| **Migrations**                | `Infrastructure/Persistence/Migrations/`   | Infrastructure   | Laravel-specific, part of DB setup.                     |
+| **Observers**                 | `Infrastructure/Persistence/Observers/`    | Infrastructure   | Laravel observers for model events.                     |
+
+
+
+### Presentation Layer
+| Component       | Suggested Path                                 | Layer        | Reason / Notes                                             |
+|-----------------|------------------------------------------------|--------------|------------------------------------------------------------|
+| **Controllers** | `Http/Controllers/`                            | Presentation | Entry point for requests, stays near routing.              |
+| **Routes**      | `routes/` or `Http/routes/`                    | Presentation | Laravel-specific, but you can group by module/version.     |
+| **Requests**    | `Http/Requests/`                               | Presentation | For input validation, tied to Laravel's request lifecycle. |
+| **Responses**   | `Http/Responses/` or `Infrastructure/Support/` | Presentation | For consistent API responses (e.g., `ApiResponse`).        |
+| **Middlewares** | `Http/Middleware/`                             | Presentation | Laravel-specific, part of routing lifecycle.               |
+
+### Presentation Layer
+| Component             | Suggested Path   | Layer     | Reason / Notes                                          |
+|-----------------------|------------------|-----------|---------------------------------------------------------|
+| **Service Providers** | `Providers/`     | Framework | Laravel bootstrapping — registering bindings, services. |
+
+---
+
+
+You may test each layer independently or mock dependencies using Laravel's testing helpers.
+
+---
+
+## 🙌 Credits
+
+Inspired by:
+- Uncle Bob’s Clean Architecture
+- Laravel Hexagonal Architecture
+- DDD principles
+

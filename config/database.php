@@ -119,13 +119,13 @@ return [
     | Migration Repository Table
     |--------------------------------------------------------------------------
     |
-    | This table keeps track of all the migrations that have already run for
+    | This table keeps track of all the Migrations that have already run for
     | your application. Using this information, we can determine which of
-    | the migrations on disk haven't actually been run on the database.
+    | the Migrations on disk haven't actually been run on the database.
     |
     */
 
-    'migrations' => [
+    'Migrations' => [
         'table' => 'migrations',
         'update_date_on_publish' => true,
     ],

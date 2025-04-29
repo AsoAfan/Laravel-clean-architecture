@@ -3,8 +3,8 @@
 namespace Application\User\Interfaces;
 
 use Application\User\DTOs\RegisterUserDTO;
-use Domains\User\Entities\UserEntity;
-use Domains\User\ValueObjects\Email;
+use Domain\User\Entities\UserEntity;
+use Domain\User\ValueObjects\Email;
 
 interface UserRepositoryInterface
 {
