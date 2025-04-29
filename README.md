@@ -152,3 +152,5 @@ Inspired by:
 - Laravel Hexagonal Architecture
 - DDD principles
 
+---
+Happy coding 🥰
